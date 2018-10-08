@@ -1,0 +1,4 @@
+<horizontal-day-select bindChangeDay='onChangeDay' max-date='{{ maxDate }}'></horizontal-day-select>
+<view class='content'>
+{{content}}
+</view>

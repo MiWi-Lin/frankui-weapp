@@ -9,7 +9,7 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "game",
-	"appid": "wxc8428c65224939d1",
+	"appid": "wx56d3693aec997ae0",
 	"projectname": "frankyui-weapp",
 	"condition": {
 		"search": {
@@ -20,9 +20,22 @@
 			"current": -1,
 			"list": []
 		},
-		"miniprogram": {
+		"plugin": {
 			"current": -1,
 			"list": []
+		},
+		"game": {
+			"list": []
+		},
+		"miniprogram": {
+			"current": 0,
+			"list": [
+				{
+					"id": -1,
+					"name": "横向日期滑动",
+					"pathName": "pages/horizontal-scroll-day/horizontal-scroll-day"
+				}
+			]
 		}
 	}
 }

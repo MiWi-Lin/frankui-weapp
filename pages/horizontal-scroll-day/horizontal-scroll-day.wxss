@@ -1,0 +1,13 @@
+
+/**
+去除横向滚动条
+*/
+::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    color: transparent;
+}
+
+.content{
+  width: 100%;
+}

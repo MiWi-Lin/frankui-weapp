@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "horizontal-day-select": "../../components/horizontal-day-select/horizontal-day-select"
+  }
+}
