@@ -1,22 +1,21 @@
 .ip_tab_comtainer {
     width: 100%;
-    background-color: #F5F5F5;
-    padding: 20rpx 0 0;
+    background-color:red;
     white-space: nowrap;
 }
 
 .ip_tab_comtainer_padd {
     display: inline-block;
     width: 24rpx;
+    height: 24rpx;
 }
 
 .ip_tab_item_s {
+  width: 120rpx;
     display: inline-block;
     line-height: 40rpx;
     padding: 12rpx 32rpx;
     color: #ED373D;
-    margin-right: 8rpx;
-    margin-left: 8rpx;
     font-size: 28rpx;
     text-align: center;
     overflow: hidden;
@@ -27,13 +26,12 @@
 }
 
 .ip_tab_item_n {
+  width: 120rpx;
     display: inline-block;
     padding: 12rpx 32rpx;
     line-height: 40rpx;
     color: #353535;
-    margin-right: 8rpx;
     background-color: #ffffff;
-    margin-left: 8rpx;
     font-size: 28rpx;
     text-align: center;
     overflow: hidden;
