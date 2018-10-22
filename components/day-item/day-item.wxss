@@ -1,0 +1,26 @@
+.ip_tab_item_s {
+  width: 50rpx;
+  line-height: 40rpx;
+  padding: 12rpx 32rpx;
+  color: #ed373d;
+  font-size: 28rpx;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background-color: #fff;
+  border-radius: 20rpx;
+  border: 1px solid #ed373d;
+}
+
+.ip_tab_item_n {
+  width: 50rpx;
+  padding: 12rpx 32rpx;
+  line-height: 40rpx;
+  color: #353535;
+  background-color: #fff;
+  font-size: 28rpx;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-radius: 4rpx;
+}

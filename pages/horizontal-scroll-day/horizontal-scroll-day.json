@@ -1,5 +1,6 @@
 {
   "usingComponents": {
-    "horizontal-day-select": "../../components/horizontal-day-select/horizontal-day-select"
+    "horizontal-day-select": "../../components/horizontal-day-select/horizontal-day-select",
+    "day-item": "../../components/day-item/day-item"
   }
 }

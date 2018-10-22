@@ -1,6 +1,6 @@
 .ip_tab_comtainer {
     width: 100%;
-    background-color:red;
+    /* background-color:red; */
     white-space: nowrap;
 }
 
@@ -11,31 +11,9 @@
 }
 
 .ip_tab_item_s {
-  width: 120rpx;
     display: inline-block;
-    line-height: 40rpx;
-    padding: 12rpx 32rpx;
-    color: #ED373D;
-    font-size: 28rpx;
-    text-align: center;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    background-color: #ffffff;
-    border-radius: 4rpx;
-    border: 1px solid #ED373D;
 }
 
 .ip_tab_item_n {
-  width: 120rpx;
     display: inline-block;
-    padding: 12rpx 32rpx;
-    line-height: 40rpx;
-    color: #353535;
-    background-color: #ffffff;
-    font-size: 28rpx;
-    text-align: center;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    border-radius: 4rpx;
-    border: 1px solid #CCCCCC;
 }

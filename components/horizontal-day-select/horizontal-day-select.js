@@ -2,7 +2,14 @@
 import dateUtil from '../../utils/dateUtil';
 
 /**
- * 注意：本组件Item宽度须固定，非固定宽度会出现添加/移除Item后位置异常，可通过自行修改Item宽度获取方式计算offset
+ * 本组件为横向日期选择，可配置属性见属性列表描述
+ * 
+ * 注意：本组件使用抽象节点设置Item。
+ * 使用方式设置组件属性，如：generic:itemComponent="componentname"
+ * Item限制：
+ * 1、Css width须固定值
+ * 2、Css margin不支持，如有必要请view包裹一层
+ * 3、非固定width/使用margin会导致宽度计算错误，可能出现添加/移除Item后滚动位置异常，如必要：可通过自行修改Item宽度获取方式计算offset
  */
 Component({
   /**

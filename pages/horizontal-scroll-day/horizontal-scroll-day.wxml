@@ -1,4 +1,8 @@
-<horizontal-day-select bindChangeDay='onChangeDay' max-date='{{ maxDate }}'></horizontal-day-select>
+<view class='line' />
+<horizontal-day-select bindChangeDay='onChangeDay' max-date='{{ maxDate }}' generic:itemComponent="day-item"></horizontal-day-select>
+<!--此线真机上才看得到 -->
+<view class='line' />
+<view class='line' />
 <view class='content'>
-{{content}}
+  {{content}}
 </view>

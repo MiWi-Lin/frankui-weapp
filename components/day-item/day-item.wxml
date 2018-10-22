@@ -1,0 +1,12 @@
+<!--components/day-item/day-item.wxml-->
+<view class="{{data.isSelect?'ip_tab_item_s':'ip_tab_item_n'}}">
+  <view>
+    {{data.weekday}}
+  </view>
+  <view>
+    {{data.month}}
+  </view>
+  <view>
+    {{data.day}}
+  </view>
+</view>
