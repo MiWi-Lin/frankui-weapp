@@ -1,5 +1,6 @@
 <view>
-  <scroll-view id='h-scroll-view' scroll-x="true" class="ip_tab_comtainer" scroll-with-animation='{{ isAnimation}}' bindscroll='handleScroll' scroll-left='{{scrollLeft}}' scroll-into-view='{{ scrollIntoId }}'>
+  <!-- <scroll-view id='h-scroll-view' scroll-x="true" class="ip_tab_comtainer" scroll-with-animation='{{ isAnimation}}' bindscroll='handleScroll' scroll-left='{{scrollLeft}}' scroll-into-view='{{ scrollIntoId }}'> -->
+    <scroll-view id='h-scroll-view' scroll-x="true" class="ip_tab_comtainer" scroll-with-animation='{{ isAnimation}}' bindscroll='handleScroll' scroll-left='{{scrollLeft}}'>
     <view id="top-padding" class="ip_tab_comtainer_padd"></view>
     <block wx:for="{{ips}}" wx:for-item="ip" wx:key="{{ip.id}}">
       <view class="{{ip.isSelect?'ip_tab_item_s':'ip_tab_item_n'}}" bindtap="onIpItemClick" wx:key="{{ip.id}}" data-item="{{ip}}" id='{{ip.id}}'>

@@ -5,7 +5,8 @@ Page({
    */
   data: {
     content: "全部",
-    maxDate: new Date().getTime()
+    maxDate: new Date().getTime(),
+    initTime: new Date().getTime()
   },
 
   /**
@@ -20,5 +21,11 @@ Page({
     */
   onChangeDay(e) {
     this.setData({ content: e.detail.date.toLocaleString() });
+  },
+
+  changeInitDate(e) {
+    console.info(`change before: ${this.data.initTime}`);
+    this.setData({ initTime: this.data.initTime - 24 * 60 * 60 * 1000-1 });
+    console.info(`change after: ${this.data.initTime}`);
   }
 })

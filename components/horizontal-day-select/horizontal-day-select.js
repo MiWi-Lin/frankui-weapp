@@ -28,16 +28,24 @@ Component({
       type: Number,
       value: 100
     },
-    locationCenter: { // 触发Add的距离
+    locationCenter: { // 选中后是否滚动到中间
       type: Boolean,
-      value: true
+      value: false
+    },
+    debug: { // 是否显示调试信息
+      type: Boolean,
+      value: false
     },
     minDate: Number, // 最小 时间戳，含毫秒
     maxDate: Number, // 最大 时间戳，含毫秒
     initDate: { // 选中 时间戳，含毫秒，默认当天
       type: Number,
-      observer: function (newVal, oldVal, changedPath) {
+      observer: function (newVal, oldVal, changedPath) { // 监听变化
+        if (this.data.scrollData.itemWidth <= 0) { // 过滤初始化监听
+          return;
+        }
         this.onAttached();
+        this.setScrollIntoId(`ID${dateUtil.dateToZero(newVal)}`);
       }
     }
   },
@@ -46,12 +54,13 @@ Component({
    * 组件的初始数据
    */
   data: {
-    ips: [],
+    ips: [], // 列表
     today: null,
     selectedDate: null,
     scrollIntoId: '',
     isAnimation: true,
-    scrollLeft: 1, // 设置1可以帮助获得itemWidth
+    scrollLeft: 0, // 设置滚动距离
+    isTouchScroll: true, // 是否触摸引发的滚动
     viewWidth: 0, // scroll-view屏幕宽度
     viewPadding: 0, // scroll-view 左右padding
     scrollData: {
@@ -67,13 +76,13 @@ Component({
     this.onAttached();
   },
   ready() {
-    this.setViewWidth();
+    this.onReady();
   },
   /**
    * 组件的方法列表
    */
   methods: {
-    setViewWidth() { // 获取相关ViewWidth
+    onReady() { // 获取相关ViewWidth
       const that = this;
       const queryA = wx.createSelectorQuery().in(this);
       queryA.select('#h-scroll-view').boundingClientRect(); // scroll - view
@@ -84,23 +93,29 @@ Component({
       queryB.select('#top-padding').boundingClientRect(); // padding
       queryB.exec(function (res) {
         that.setData({ viewPadding: res[0].width });
+        that.setScrollLeft(1); // 设置1可以帮助获得itemWidth
       });
     },
     onAttached() { // 初始化 & 重置状态 回调
       this.initData();
-      this.setScrollIntoId(`ID${this.data.selectedDate.getTime()}`);
     },
     initData() { // 初始化基本数据
       const today = dateUtil.dateToZero(new Date());
-      console.info(`Today is: ${today}`);
+      this.showInfo(`Today is: ${today}`);
       const selectedDate = this.data.initDate ? dateUtil.dateToZero(this.data.initDate) : today;
       this.setData({ today, selectedDate });
       this.initDays();
     },
     initDays() { // 初始化列表
       this.ips = [];
-      this.addDays(this.data.selectedDate, true);
-      this.addDays(dateUtil.getNextDay(this.data.selectedDate), false);
+
+      // 前后都添加moreCount
+      // this.addDays(this.data.selectedDate, true);
+      // this.addDays(dateUtil.getNextDay(this.data.selectedDate), false);
+
+      // 前后添加moreCount/2
+      const initStartTime = this.data.selectedDate.getTime() - this.data.moreCount / 2 * 24 * 60 * 60 * 1000;
+      this.addDays(dateUtil.dateToZero(initStartTime), false);
     },
     /**
      * 添加包含date的item对象moreCount个，并判断maxCacheCount, minDate, maxDate
@@ -144,7 +159,7 @@ Component({
         }
       }
       this.setData({ ips: list });
-      console.info(`日期总个数：${list.length} 移除:${removeCount} 添加:${addCount}`);
+      this.showInfo(`日期总个数：${list.length} 移除:${removeCount} 添加:${addCount}`);
       return { addCount, removeCount };
     },
 
@@ -166,17 +181,19 @@ Component({
       this.setData({ isAnimation });
     },
 
-    setScrollIntoId(scrollIntoId) {
+    setScrollIntoId(scrollIntoId) { // 设置滚动到指定ID
+      this.showInfo(`setScrollIntoId ${scrollIntoId}`);
       this.setData({ scrollIntoId });
       this.runScrollIntoId();
     },
 
-    setScrollLeft(scrollLeft) {
+    setScrollLeft(scrollLeft) { // 手动设置滚动距离
+      this.data.isTouchScroll = false;
       this.setData({ scrollLeft });
     },
 
     handleToupper(e) { // 滑动到最左侧范围
-      console.info('触顶');
+      this.showInfo('触顶');
       this.setIsAnimation(false);
       const { ips, scrollData: { itemWidth } } = this.data;
       const beforeDay = dateUtil.getBeforeDay(ips[0].date);
@@ -186,7 +203,7 @@ Component({
     },
 
     handleTolower(e) { // 滑动到最右侧范围
-      console.info('触底');
+      this.showInfo('触底');
       this.setIsAnimation(false);
       const { ips, scrollData: { itemWidth } } = this.data;
       const currentLastDate = ips[ips.length - 1].date;
@@ -199,10 +216,10 @@ Component({
     },
 
     handleScroll(e) { // 滑动监听
-      const { scrollData, ips, viewWidth, viewPadding, threshold } = this.data;
+      const { scrollData, ips, isTouchScroll, viewWidth, viewPadding, threshold } = this.data;
       const { timer, itemWidth, isAdded } = scrollData;
       const { scrollLeft, scrollWidth, deltaX } = e.detail;
-      console.info(`HandleScroll: ${scrollLeft}-${scrollWidth}-${deltaX}`);
+      this.showInfo(`HandleScroll: ${scrollLeft}-${scrollWidth}-${deltaX}`);
 
       if (timer) { // 重置Timer
         clearTimeout(timer);
@@ -212,6 +229,12 @@ Component({
       // 获取itemWidth
       if (itemWidth <= 0 && ips && ips.length > 0) {
         scrollData.itemWidth = (scrollWidth - viewPadding * 2) / ips.length;
+        this.setScrollIntoId(`ID${this.data.selectedDate.getTime()}`);
+      }
+
+      if (!isTouchScroll) { // 非触摸引起的滚动无效
+        this.data.isTouchScroll = true;
+        return;
       }
 
       const inMaxLeftArea = scrollLeft < threshold;
@@ -245,7 +268,7 @@ Component({
       }
     },
 
-    runScrollIntoId() {
+    runScrollIntoId() { // 滚动到指定ID
       const { ips, locationCenter, viewWidth, viewPadding, scrollData: { itemWidth } } = this.data;
       var curIndex = ips.length - 1;
       for (var i = 0; i < ips.length; i++) {
@@ -253,17 +276,22 @@ Component({
           curIndex = i;
         }
       }
-      let scrollLeft = itemWidth * curIndex + viewPadding; // 选中后滚动到左侧
-      if (locationCenter) { 
+      let scrollLeft = itemWidth * curIndex; // 选中后滚动到左侧
+      if (locationCenter) {
         scrollLeft -= ((viewWidth - itemWidth) / 2); // 选中后滚动到中间
       }
       this.setScrollLeft(scrollLeft);
     },
 
     onIpItemClick: function (event) { // Item点击
-      const { ips } = this.data;
+      const { ips, scrollIntoId } = this.data;
       this.setIsAnimation(true);
       var id = event.currentTarget.dataset.item.id;
+
+      if (id === scrollIntoId) { // 重复点击
+        return;
+      }
+
       var curIndex = 0;
       for (var i = 0; i < ips.length; i++) {
         if (id == ips[i].id) {
@@ -275,12 +303,14 @@ Component({
       }
       this.setData({
         selectedDate: ips[curIndex].date,
-        // scrollIntoId: ips[curIndex].id,
-        ips: ips,
+        ips,
       });
       this.setScrollIntoId(ips[curIndex].id);
-      console.info(ips[curIndex].id);
       this.triggerEvent('ChangeDay', { date: ips[curIndex].date });
+    },
+
+    showInfo(msg){
+      if (this.data.debug) console.info(msg);
     }
   }
 })
